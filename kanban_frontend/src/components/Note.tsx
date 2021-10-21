@@ -1,10 +1,14 @@
 import { Paper, Typography } from "@mui/material";
+import { Draggable } from "react-beautiful-dnd";
 
-
-export default function DraggableNote(props: any) {
+export default function Note(props: any) {
     return (
-        <Paper sx={{p:2}}>
-            <Typography component="div" sx={{ textAlign: "center", color: "gray", fontSize: "12px" }}>{props.content}</Typography>
-        </Paper>
+        <Draggable draggableId={props.task.id} index={props.index}>
+            {(provided) => (
+                <Paper sx={{ p: 2 }} component="div" {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+                    <Typography component="div" sx={{ textAlign: "left", color: "gray", fontSize: "12px" }}>{props.task.content}</Typography>
+                </Paper>
+            )}
+        </Draggable >
     )
 }
