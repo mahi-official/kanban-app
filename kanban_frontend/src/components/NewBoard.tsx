@@ -1,39 +1,37 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
-import React, { useEffect } from "react";
-import { createTask, updateTask } from "../apis/TaskAPI";
+import React from "react";
+import { createBoard } from "../apis/BoardAPI";
 
-export default function NewNoteDialog(props: any) {
+export default function NewBoardDialog(props: any) {
     const [value, setValue] = React.useState('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
 
-    const handleNewNoteSave = () => {
-        props.content ? updateTask(props.task, value) : createTask(props.board, value);
-        props.onClose()
-    }
-     useEffect(() => {
-        setValue(props.content ?? '');
-     }, [props.content])
+    const handleNewBoardSave = () => {
+        createBoard(value);
+        props.onClose();
 
+    }
+    
     return (
         <Dialog open={props.open} onClose={props.onClose} fullWidth>
-            <DialogTitle>Add New Task</DialogTitle>
+            <DialogTitle>Add New Board</DialogTitle>
             <DialogContent>
                 <TextField
                     id="new-note"
                     autoFocus
                     fullWidth
                     multiline
-                    minRows={8}
+                    minRows={1}
                     value={value}
                     onChange={handleChange}
                 />
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.onClose}>Cancel</Button>
-                <Button onClick={handleNewNoteSave}>Save</Button>
+                <Button onClick={handleNewBoardSave}>Save</Button>
             </DialogActions>
         </Dialog>
     );

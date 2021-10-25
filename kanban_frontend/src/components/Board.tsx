@@ -5,12 +5,13 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import Note from './Note';
 import React from 'react';
 import NewNoteDialog from './NewNote';
+import TaskInstance from '../apis/TaskAPI';
 
 export default function Board(props: any) {
 
     const [openDialog, setOpenDialog] = React.useState<boolean>(false);
     const [boardId, setBoardId] = React.useState<string>('');
-  
+
     const handleAddNoteClose = () => {
         setOpenDialog(false);
     }
@@ -27,8 +28,7 @@ export default function Board(props: any) {
                         flexGrow: 1,
                         backgroundColor: 'whitesmoke',
                         padding: '0 0.5em',
-                        width: 'auto',
-                        maxWidth: '25%'
+                        width: '300px'
                     }}
                     {...provided.draggableProps}
                     ref={provided.innerRef}
@@ -47,7 +47,7 @@ export default function Board(props: any) {
                                 {(provided) => (
                                     <Stack spacing={1} {...provided.droppableProps} ref={provided.innerRef} component="div">
                                         {props.tasks.length > 0 ?
-                                            props.tasks.map((task: any, index: number) => (
+                                            props.tasks.map((task: TaskInstance, index: number) => (
                                                 <Note index={index} task={task} key={task.id} />
                                             ))
                                             :
@@ -61,9 +61,15 @@ export default function Board(props: any) {
                             </Droppable>
                         </Grid>
                         <Grid item xs={10}>
-                            <Button startIcon={<Add style={{ fill: "gray" }} />}
-                                size="small" id={props.board.id} sx={{ fontWeight: 600, color: 'gray' }}
-                                onClick={(event) => handleNewNoteDialog(event)}>
+                            <Button
+                                id='new-board'
+                                size='medium'
+                                onClick={(event) => handleNewNoteDialog(event)}
+                                sx={{ fontSize: 12, fontWeight: 400, color: 'gray', margin: 1 }}
+                                startIcon={
+                                    <Add style={{ fill: "gray", fontSize: 12 }} />
+                                }
+                            >
                                 Add a card
                             </Button>
                         </Grid>
@@ -73,7 +79,7 @@ export default function Board(props: any) {
                             </IconButton>
                         </Grid>
                     </Grid>
-                    <NewNoteDialog id={boardId} open={openDialog} onClose={handleAddNoteClose} />
+                    <NewNoteDialog board={boardId} open={openDialog} onClose={handleAddNoteClose} />
                 </Box >
             )}
         </Draggable>
