@@ -10,7 +10,8 @@ export default function NewNoteDialog(props: any) {
     };
 
     const handleNewNoteSave = () => {
-        props.content ? updateTask(props.task, value) : createTask(props.board, value);
+        props.content ? updateTask(props.task, value) : createTask(props.board, value)
+        props.onSave()
         props.onClose()
     }
      useEffect(() => {

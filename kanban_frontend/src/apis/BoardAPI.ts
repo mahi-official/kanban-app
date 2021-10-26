@@ -38,7 +38,7 @@ const createBoard = async(title: string) => {
         })
         .catch((e) => {
             console.error(e);
-            return [];
+            return {}
         });
     return data;
 }

@@ -10,13 +10,11 @@ import TaskInstance from '../apis/TaskAPI';
 export default function Board(props: any) {
 
     const [openDialog, setOpenDialog] = React.useState<boolean>(false);
-    const [boardId, setBoardId] = React.useState<string>('');
 
     const handleAddNoteClose = () => {
         setOpenDialog(false);
     }
     const handleNewNoteDialog = (event: any) => {
-        setBoardId(event.target.id);
         setOpenDialog(true);
     }
 
@@ -79,7 +77,7 @@ export default function Board(props: any) {
                             </IconButton>
                         </Grid>
                     </Grid>
-                    <NewNoteDialog board={boardId} open={openDialog} onClose={handleAddNoteClose} />
+                    <NewNoteDialog board={props.board.id} open={openDialog} onClose={handleAddNoteClose} onSave={props.saveTask}/>
                 </Box >
             )}
         </Draggable>

@@ -7,7 +7,7 @@ import { Box } from '@mui/system';
 import { Add } from '@mui/icons-material';
 import NewBoardDialog from '../components/NewBoard';
 import BoardInstance, {  getBoards } from '../apis/BoardAPI';
-import TaskInstance, { getTasks } from '../apis/TaskAPI';
+import TaskInstance, { getTasks, moveTask } from '../apis/TaskAPI';
 
 
 export default function Homepage() {
@@ -63,7 +63,9 @@ export default function Homepage() {
                 let oldTaskList = Array.from(boards[srcBoard].tasks!);
                 let newTaskList = Array.from(boards[dstBoard].tasks!);
                 let newBoard = Array.from(boards);
-                
+
+                moveTask(task.id, newBoard[dstBoard].id)
+
                 oldTaskList.splice(source.index, 1);
                 newTaskList.splice(destination.index, 0, task);
 
@@ -129,7 +131,7 @@ export default function Homepage() {
                             >
                                 {
                                     boards.map((board: BoardInstance, index: number) => {
-                                        return <Board board={board} tasks={board.tasks} key={board.id} index={index} />
+                                        return <Board board={board} tasks={board.tasks} key={board.id} index={index} saveTask={getData}/>
                                     })}
                                 {provided.placeholder}
                             </Stack>
@@ -155,9 +157,9 @@ export default function Homepage() {
                                     <Add style={{ fill: "gray", fontSize: 12 }} />
                                 }
                             >
-                                Add another List
+                                Add another Board
                             </Button>
-                            <NewBoardDialog open={openDialog} onClose={handleNewBoardClose} />
+                            <NewBoardDialog open={openDialog} onClose={handleNewBoardClose} onSave={getData}/>
                         </Box>
                     </Grid>
                 </Grid>

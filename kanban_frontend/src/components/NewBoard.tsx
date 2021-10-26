@@ -3,16 +3,19 @@ import React from "react";
 import { createBoard } from "../apis/BoardAPI";
 
 export default function NewBoardDialog(props: any) {
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = React.useState<string>('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
     };
 
     const handleNewBoardSave = () => {
-        createBoard(value);
-        props.onClose();
-
+        createBoard(value)
+        .then(res => {
+            setValue('')
+            props.onSave();
+            props.onClose();
+        })
     }
     
     return (

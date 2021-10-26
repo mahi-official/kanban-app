@@ -56,6 +56,20 @@ const updateTask = async(id: string, content: string) => {
     return data;
 }
 
+const moveTask = async(id: string, board: string) => {
+    const data = await axios.put<TaskInstance>(`/tasks/${id}/`, {"board" : board})
+        .then((response) => {
+            if (response.status === 200) {
+                return response.data
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            return [];
+        });
+    return data;
+}
+
 const deleteTask = async(id: string) => {
     const data = await axios.delete<TaskInstance>(`/tasks/${id}/`)
         .then((response) => {
@@ -70,4 +84,4 @@ const deleteTask = async(id: string) => {
     return data;
 }
 
-export {getTasks, createTask, updateTask, deleteTask}
+export {getTasks, createTask, updateTask, moveTask, deleteTask}
