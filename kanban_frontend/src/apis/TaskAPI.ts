@@ -1,11 +1,10 @@
 import axios from './../config/axios';
 
-interface TaskInstance {
+export default interface TaskInstance {
     id: string;
     content: string;
     board: string;
 }
-export default TaskInstance;
 
 interface ServerResponse {
     count: number;
@@ -21,24 +20,16 @@ const getTasks = async() => {
                 return response.data.results
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return [];
-        });
     return data;
 }
 
 const createTask = async(board: string, content: string) => {
     const data = await axios.post<TaskInstance>('/tasks/', {"content" : content, "board": board})
         .then((response) => {
-            if (response.status === 200) {
+            if (response.status === 201) {
                 return response.data
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return [];
-        });
     return data;
 }
 
@@ -49,10 +40,6 @@ const updateTask = async(id: string, content: string) => {
                 return response.data
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return [];
-        });
     return data;
 }
 

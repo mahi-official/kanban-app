@@ -1,14 +1,13 @@
 import axios from './../config/axios';
 import TaskInstance from './TaskAPI';
 
-interface BoardInstance {
+export default interface BoardInstance {
     id: string;
     title: string;
-    tasks?: TaskInstance[]
+    tasks: TaskInstance[] | null;
 }
-export default BoardInstance;
 
-interface ServerResponse {
+type ServerResponse = {
     count: number;
     next?: string;
     previous?: string;
@@ -32,14 +31,11 @@ const getBoards = async() => {
 const createBoard = async(title: string) => {
     const data = await axios.post<BoardInstance>('/boards/', {"title" : title})
         .then((response) => {
-            if (response.status === 200) {
+            if (response.status === 201) {
+                response.data.tasks = []
                 return response.data
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return {}
-        });
     return data;
 }
 
@@ -50,10 +46,6 @@ const updateBoard = async(id: string, title: string) => {
                 return response.data
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return [];
-        });
     return data;
 }
 

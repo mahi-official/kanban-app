@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom';
 import Homepage from './screens/Homepage';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Page404 from './screens/Page404';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
+import BoardDialog from './features/boards/BoardDialog';
+import BoardsList from './features/boards/Boards';
+
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Homepage} />
+        <Route exact path="/store/home" component={BoardsList} />
+        <Route exact path="/store/addBoard" component={BoardDialog} />
         <Route component={Page404} />
       </Switch>
     </BrowserRouter>
@@ -16,7 +23,9 @@ export default function App() {
 };
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+  <App />
+  </Provider>,
   document.getElementById('root')
 );
 
