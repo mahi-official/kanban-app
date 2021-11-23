@@ -13,4 +13,7 @@ const data: {[key: string] : any } = {
     columnOrder:['board-1', 'board-2'],
 };
 
+export const BOARD = 'board'
+export const TASK = 'task'
+
 export default data;

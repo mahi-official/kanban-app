@@ -2,43 +2,52 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import TaskInstance from '../../apis/TaskAPI'
 
 export interface TaskState {
-  tasks: TaskInstance[]
+  tasks: {[key:string]: TaskInstance}
   showDialog: boolean
-  status: 'idle' | 'loading' | 'failed' | 'success'
+  task: TaskInstance | null
+  board: string | null
 }
 
 const initialState: TaskState = {
-  tasks: [],
+  tasks: {},
   showDialog: false,
-  status: 'idle',
+  task: null,
+  board: null
 }
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
+
+    setTasks(state, action: PayloadAction<TaskInstance[]>) {
+      action.payload.forEach(t =>{
+        state.tasks[t.id] = t
+      })
+    },
     
-    addTask(state, action) {
-      state.tasks.push(action.payload)
+    addTask(state, action: PayloadAction<TaskInstance>) {
+      state.tasks[action.payload.id] = action.payload
     },
 
-    modifyTask(state, action) {
-      let idx: number = state.tasks.findIndex((b) => b.id === action.payload.id)!
-      let updatedTasks = Array.from(state.tasks);
-      updatedTasks.splice(idx, 1, action.payload)
-      state.tasks = updatedTasks
+    modifyTask(state, action: PayloadAction<TaskInstance>) {
+      state.tasks = {...state.tasks, [action.payload.id]: action.payload}
     },
 
-    setTasks(state, action) {
-      state.tasks = action.payload
+    showTaskDialog(state, action) {
+      state.board = action.payload.board ?? null
+      state.task = action.payload.task
+      state.showDialog = true
     },
 
-    setStatus(state, action: PayloadAction<'idle' | 'loading' | 'failed' | 'success'>) {
-      state.status = action.payload
+    hideTaskDialog(state) {
+      state.showDialog = false
+      state.task = null
+      state.board = null
     },
 
   }
 })
 
-export const { addTask, modifyTask, setTasks, setStatus } = tasksSlice.actions
+export const {setTasks, addTask, modifyTask, showTaskDialog, hideTaskDialog} = tasksSlice.actions
 export default tasksSlice.reducer

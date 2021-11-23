@@ -2,41 +2,47 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BoardInstance from '../../apis/BoardAPI'
 
 export interface BoardState {
-    boards: BoardInstance[];
-    status: 'idle' | 'loading' | 'failed' | 'success';
+  boards: {[key: string]: BoardInstance }
+  board: BoardInstance | null
+  showDialog: boolean
 }
 
 const initialState: BoardState = {
-    boards: [],
-    status: 'idle',
+  boards: {},
+  board: null,
+  showDialog: false,
 }
 
 const boardsSlice = createSlice({
-    name: 'boards',
-    initialState,
-    reducers: {
+  name: 'boards',
+  initialState,
+  reducers: {
 
-        addBoard(state, action) {
-            state.boards.push(action.payload)
-        },
+    setBoards(state, action:PayloadAction<BoardInstance[]>) {
+      action.payload.forEach(b =>{
+        state.boards[b.id] = b
+      })
+    },
 
-        modifyBoard(state, action) {
-            let idx: number = state.boards.findIndex((b) => b.id === action.payload.id)!
-            let updatedBoards = Array.from(state.boards)
-            action.payload.tasks = updatedBoards[idx].tasks
-            updatedBoards.splice(idx, 1, action.payload)
-            state.boards = updatedBoards
-        },
+    addBoard(state, action: PayloadAction<BoardInstance>) {
+      state.boards[action.payload.id] = action.payload
+    },
 
-        setBoards(state, action) {
-            state.boards = action.payload
-        },
+    modifyBoard(state, action: PayloadAction<BoardInstance>) {
+      state.boards = {...state.boards, [action.payload.id]: action.payload}
+    },
 
-        setStatus(state, action: PayloadAction<'idle' | 'loading' | 'failed' | 'success'>) {
-            state.status = action.payload
-        }
-    }
+    showBoardDialog(state, action) {
+      state.board = action.payload
+      state.showDialog = true
+    },
+
+    hideBoardDialog(state) {
+      state.showDialog = false
+      state.board = null
+    },
+  }
 })
 
-export const { addBoard, setBoards, modifyBoard, setStatus } = boardsSlice.actions
+export const { setBoards, addBoard, modifyBoard, showBoardDialog, hideBoardDialog } = boardsSlice.actions
 export default boardsSlice.reducer

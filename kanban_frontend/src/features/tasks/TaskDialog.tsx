@@ -1,69 +1,74 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import React, { useEffect } from "react";
 import TaskInstance, { createTask, updateTask } from "../../apis/TaskAPI";
-import { useAppDispatch } from "../../app/hooks";
-import { addTask, modifyTask, setStatus } from "./TasksSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addTaskToOrder } from "../order/orderSlice";
+import { addTask, hideTaskDialog, modifyTask } from "./TasksSlice";
 
-type TaskDialogProps = {
-    task: TaskInstance | null
-    board: string
-    open: boolean
-    onClose: () => void
-}
 
-export default function TaskDialog(props: TaskDialogProps) {
+export default function TaskDialog() {
 
-    const [value, setValue] = React.useState<string>('');
-    const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
+  const board = useAppSelector(state => state.tasksState.board)
+  const task = useAppSelector(state => state.tasksState.task)
+  const open = useAppSelector(state => state.tasksState.showDialog)
 
-    useEffect(() => {
-        if (props.task){
-            setValue(props.task.content)
-        }
-    }, [props.task])
+  const [value, setValue] = React.useState<string>('')
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(event.target.value);
-    };
-
-    const handleTaskSave = () => {
-        dispatch(setStatus("loading"))
-        if (!props.task) {
-            createTask(props.board, value)
-            .then((res: TaskInstance | undefined) => {
-                dispatch(addTask(res))
-                dispatch(setStatus("success"))
-            })
-        } else {
-            updateTask(props.task.id, value)
-            .then((res: TaskInstance | undefined) => {
-                dispatch(modifyTask(res))
-                dispatch(setStatus("success"))
-            })
-        }
-        dispatch(setStatus("idle"))
-        props.onClose()
+  useEffect(() => {
+    if (task) {
+      setValue(task.content)
     }
+  }, [task])
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
+  const handleTaskSave = () => {
+    if (task) {
+      updateTask(task.id, value)
+        .then((res: TaskInstance | undefined) => {
+          if (res) {
+            dispatch(modifyTask(res))
+          }
+        })
+    } else {
+      createTask(board!, value)
+        .then((res: TaskInstance | undefined) => {
+          if (res) {
+            dispatch(addTask(res))
+            dispatch(addTaskToOrder({ bid: res.board, tid: res.id }))
+          }
+        })
+    }
+    handleTaskClose()
+  }
+
+  const handleTaskClose = () => {
+    setValue('')
+    dispatch(hideTaskDialog())
+  }
 
 
-    return (
-        <Dialog open={props.open} onClose={props.onClose} fullWidth>
-            <DialogTitle>Task</DialogTitle>
-            <DialogContent>
-                <TextField
-                    id="new-note"
-                    autoFocus
-                    fullWidth
-                    multiline
-                    minRows={8}
-                    value={value}
-                    onChange={handleChange}
-                />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={props.onClose}>Cancel</Button>
-                <Button onClick={handleTaskSave}>Save</Button>
-            </DialogActions>
-        </Dialog>
-    );
+  return (
+    <Dialog open={open} onClose={handleTaskClose} fullWidth>
+      <DialogTitle>Task</DialogTitle>
+      <DialogContent>
+        <TextField
+          id="new-note"
+          autoFocus
+          fullWidth
+          multiline
+          minRows={8}
+          value={value}
+          onChange={handleChange}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleTaskClose}>Cancel</Button>
+        <Button onClick={handleTaskSave}>Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
 }

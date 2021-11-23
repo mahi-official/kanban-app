@@ -1,9 +1,9 @@
 import axios from './../config/axios';
 
 export default interface TaskInstance {
-    id: string;
-    content: string;
-    board: string;
+    id: string
+    content: string
+    board: string
 }
 
 interface ServerResponse {
@@ -24,9 +24,9 @@ const getTasks = async() => {
 }
 
 const createTask = async(board: string, content: string) => {
-    const data = await axios.post<TaskInstance>('/tasks/', {"content" : content, "board": board})
+    const data = await axios.post<TaskInstance>('/tasks/', { "board": board, "content" : content})
         .then((response) => {
-            if (response.status === 201) {
+            if (response.status === 200) {
                 return response.data
             }
         })
@@ -50,10 +50,6 @@ const moveTask = async(id: string, board: string) => {
                 return response.data
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return [];
-        });
     return data;
 }
 
@@ -64,10 +60,6 @@ const deleteTask = async(id: string) => {
                 return;
             }
         })
-        .catch((e) => {
-            console.error(e);
-            return;
-        });
     return data;
 }
 
