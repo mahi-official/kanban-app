@@ -1,9 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import React, { useEffect } from "react"
-import BoardInstance, { createBoard, updateBoard } from "../../apis/BoardAPI"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { addBoardToOrder } from "../order/orderSlice"
-import { addBoard, hideBoardDialog, modifyBoard } from "./BoardsSlice"
+import BoardInstance, { createBoard, updateBoard } from "../apis/BoardAPI"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { addBoardToOrder } from "../features/order/orderSlice"
+import { addBoard, hideBoardDialog, modifyBoard } from "../features/boards/BoardsSlice"
 
 
 export default function BoardDialog() {

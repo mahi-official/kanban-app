@@ -7,21 +7,22 @@ import BoardInstance, { getBoards } from '../apis/BoardAPI'
 import TaskInstance, { getTasks, moveTask } from '../apis/TaskAPI'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import SearchAppBar from '../components/AppBar'
-import Board from '../features/boards/Board'
-import BoardDialog from '../features/boards/BoardDialog'
+import Board from '../components/Board'
+import BoardDialog from '../components/BoardDialog'
 import { setTasks } from '../features/tasks/TasksSlice'
 import { setBoards, showBoardDialog } from '../features/boards/BoardsSlice'
-import TaskDialog from '../features/tasks/TaskDialog'
+import TaskDialog from '../components/TaskDialog'
 import { BOARD, TASK } from '../config/constants'
 import { setBoardsOrder } from '../features/order/orderSlice'
 import GroupTasks from '../app/utils'
-import { disableDrag } from '../features/common/appSlice'
+import { disableDrag } from '../features/app/appSlice'
 
 export default function HomePage() {
 
   const dispatch = useAppDispatch()
   const boards = useAppSelector(state => state.boardsState.boards)
   const order = useAppSelector(state => state.orderState.order)
+  const dark = useAppSelector(state => state.appState.darkMode)
 
 
   useEffect(() => {
@@ -129,13 +130,18 @@ export default function HomePage() {
 
 
   return (
-    <Box>
+    <Box sx={{
+      height: '97vh',
+      backgroundColor: dark ? 'gray' : 'white',
+    }}>
       <SearchAppBar />
       <Stack
         direction="row"
         justifyContent="flex-start"
         alignItems="flex-start"
         spacing={2}
+        paddingLeft={2}
+        paddingRight={2}
       >
         <DragDropContext
           onDragEnd={handleDragEnd}>

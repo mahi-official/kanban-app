@@ -11,6 +11,8 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { enableDarkMode } from '../features/app/appSlice';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -104,12 +106,14 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 export default function SearchAppBar() {
 
-  const [checked, setChecked] = React.useState(false);
+  const dispatch = useAppDispatch()
+  const checked = useAppSelector(state => state.appState.darkMode)
+
   const theme = useTheme();
-  theme.palette.mode = 'dark'
+  theme.palette.mode = checked ? 'dark' : 'light'
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
+    dispatch(enableDarkMode(!checked))
   };
 
   return (

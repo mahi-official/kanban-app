@@ -2,9 +2,9 @@ import { Draggable } from 'react-beautiful-dnd';
 import { Grid, IconButton, Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import TaskInstance from '../../apis/TaskAPI';
-import { showTaskDialog } from './TasksSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import TaskInstance from '../apis/TaskAPI';
+import { showTaskDialog } from '../features/tasks/TasksSlice';
 
 type TaskProps = {
     index: number

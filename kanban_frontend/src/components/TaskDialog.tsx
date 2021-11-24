@@ -1,9 +1,9 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import React, { useEffect } from "react";
-import TaskInstance, { createTask, updateTask } from "../../apis/TaskAPI";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addTaskToOrder } from "../order/orderSlice";
-import { addTask, hideTaskDialog, modifyTask } from "./TasksSlice";
+import TaskInstance, { createTask, updateTask } from "../apis/TaskAPI";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { addTaskToOrder } from "../features/order/orderSlice";
+import { addTask, hideTaskDialog, modifyTask } from "../features/tasks/TasksSlice";
 
 
 export default function TaskDialog() {

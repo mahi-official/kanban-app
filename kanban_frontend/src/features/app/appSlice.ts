@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface AppState {
     dragDisabled: boolean
+    darkMode: boolean
 }
 
 const initialState: AppState = {
-    dragDisabled: false
+    dragDisabled: false,
+    darkMode: false
 }
 
 const appSlice = createSlice({
@@ -18,8 +20,12 @@ const appSlice = createSlice({
         state.dragDisabled = action.payload
     },
 
+    enableDarkMode(state, action: PayloadAction<boolean>) {
+      state.darkMode = action.payload
+  },
+
   }
 })
 
-export const {disableDrag} = appSlice.actions
+export const {disableDrag, enableDarkMode} = appSlice.actions
 export default appSlice.reducer

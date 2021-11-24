@@ -2,7 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import tasksReducer from '../features/tasks/TasksSlice'
 import boardsReducer from '../features/boards/BoardsSlice'
 import orderReducer from '../features/order/orderSlice'
-import appReducer from '../features/common/appSlice'
+import appReducer from '../features/app/appSlice'
 
 export const store = configureStore({
   reducer: {

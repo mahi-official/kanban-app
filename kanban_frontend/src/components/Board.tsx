@@ -3,13 +3,13 @@ import { Box } from '@mui/system';
 import { Add, BackupTable, MoreHoriz } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { Task } from '../tasks/Task';
-import BoardInstance from '../../apis/BoardAPI';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { showTaskDialog } from '../tasks/TasksSlice';
-import { showBoardDialog } from './BoardsSlice';
-import { TASK } from '../../config/constants';
-import { getTaskOrder } from '../order/orderSlice';
+import { Task } from './Task';
+import BoardInstance from '../apis/BoardAPI';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { showTaskDialog } from '../features/tasks/TasksSlice';
+import { showBoardDialog } from '../features/boards/BoardsSlice';
+import { TASK } from '../config/constants';
+import { getTaskOrder } from '../features/order/orderSlice';
 
 type BoardProps = {
     board: BoardInstance
