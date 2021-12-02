@@ -4,22 +4,25 @@ import Page404 from './screens/Page404';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import HomePage from './screens/Home';
-
+import { ThemeProvider, useTheme } from '@mui/material';
 
 export default function App() {
+  const theme = useTheme()
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route component={Page404} />
-      </Switch>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route component={Page404} />
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 };
 
 ReactDOM.render(
   <Provider store={store}>
-  <App />
+    <App />
   </Provider>,
   document.getElementById('root')
 );

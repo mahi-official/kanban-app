@@ -131,7 +131,7 @@ export default function HomePage() {
 
   return (
     <Box sx={{
-      height: '97vh',
+      height: '100vh',
       backgroundColor: dark ? 'gray' : 'white',
     }}>
       <SearchAppBar />
