@@ -11,13 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from utils import get_credentials
+# from utils import get_credentials
+import os
 
 #get credentials from environment
-CREDENTIALS = get_credentials()
+# CREDENTIALS = get_credentials()
 
-if not CREDENTIALS:
-    raise Exception("Environment variables not found. Please add the file to run the application")
+# if not CREDENTIALS:
+#     raise Exception("Environment variables not found. Please add the file to run the application")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = CREDENTIALS.get("secret_key")
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CREDENTIALS.get("debug")
+DEBUG = eval(os.environ.get('DEBUG'))
 
-ALLOWED_HOSTS = CREDENTIALS.get("allowed_hosts")
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(",")
 
 
 # Application definition
@@ -48,12 +49,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'board.apps.BoardConfig',
     'task.apps.TaskConfig',
-    'order.apps.OrderConfig'
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,12 +89,12 @@ WSGI_APPLICATION = 'kanban_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': CREDENTIALS.get("db_name"),
-        'USER': CREDENTIALS.get("db_user"),
-        'PASSWORD': CREDENTIALS.get("db_password"),
-        'HOST': CREDENTIALS.get("db_host"),
-        'PORT': CREDENTIALS.get("db_port"),
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
@@ -135,6 +136,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -159,5 +162,6 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8080',
     'http://localhost:3000',
 ]
