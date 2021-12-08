@@ -14,11 +14,15 @@
 
 # production
 */build
+*/data
 
 # misc
 .vscode/
 .DS_Store
 .env
+.env.prod
+.env.dev
+.env.prod.db
 
 npm-debug.log*
 yarn-debug.log*
