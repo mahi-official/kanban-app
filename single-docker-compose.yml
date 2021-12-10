@@ -6,33 +6,49 @@ services:
     image: postgres:14-alpine
     restart: always
     env_file:
-      - ./.env.prod.db
+      - ./kanban_backend/.env.prod.db
     volumes:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
       - postgres_data:/var/lib/postgresql/data
   
   backend:
     container_name: kanban_backend
-    build: .
+    build:
+      context: ./kanban_backend
+      dockerfile: ./Dockerfile
     command: gunicorn --bind 0.0.0.0:8000 kanban_backend.wsgi
     volumes:
       - .:/microservice:rw  #from dockerfile
       - static:/home/app/microservice/static
     env_file:
-      - ./.env.prod
+      - ./kanban_backend/.env.prod
     expose:
       - 8000
     restart: always
     depends_on:
       - db
   
+  frontend:
+    container_name: kanban_frontend
+    build:
+      context: ./kanban_frontend
+      dockerfile: ./Dockerfile
+    expose:
+      - 3000
+    env_file:
+      - ./kanban_frontend/.env.prod
+    links:
+      - backend
+  
   nginx:
     container_name: kanban_backend_nginx
-    build: ./nginx
+    build:
+      context: ./kanban_backend/nginx
     volumes:
       - static:/home/app/microservice/static
     ports:
       - 8000:80
+      - 3000:80
     depends_on:
       - backend
     restart: on-failure
