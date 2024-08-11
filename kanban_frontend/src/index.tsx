@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import HomePage from './screens/Home';
 import { ThemeProvider, useTheme } from '@mui/material';
+// import App from './react_legacy';
+
 
 export default function App() {
   const theme = useTheme()

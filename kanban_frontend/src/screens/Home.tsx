@@ -77,7 +77,7 @@ export default function HomePage() {
 
         let fromBoard: { [key: string]: string[] } = newBoardOrder[frmIdx]
         let toBoard: { [key: string]: string[] } = newBoardOrder[toIdx]
-        
+
         let newFromTaskList: string[] = Array.from(fromBoard[source.droppableId])
         let newToTaskList: string[] = Array.from(toBoard[destination.droppableId])
 
@@ -112,15 +112,15 @@ export default function HomePage() {
         let idx: number = newBoardOrder.findIndex((b) => Object.keys(b).includes(source.droppableId))!
         let edited: { [key: string]: string[] } = newBoardOrder[idx]
         let newTaskList: string[] = Array.from(edited[source.droppableId])
-        
+
         newTaskList.splice(source.index, 1)
         newTaskList.splice(destination.index, 0, draggableId)
-        
+
         edited = { ...edited, [source.droppableId]: newTaskList }
         newBoardOrder[idx] = edited
-        
+
         dispatch(setBoardsOrder(newBoardOrder))
-        
+
         return
       }
     }

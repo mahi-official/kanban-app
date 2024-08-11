@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'board.apps.BoardConfig',
     'task.apps.TaskConfig',
+    'elasticapm.contrib.django',
 ]
 
 MIDDLEWARE = [

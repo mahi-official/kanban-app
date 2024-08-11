@@ -27,7 +27,7 @@ export default function Board(props: BoardProps) {
   const limit = 5
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const [expanded, setExpanded] = useState<boolean>(true)
+  const [expanded, setExpanded] = useState(true)
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget)
